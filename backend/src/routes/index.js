@@ -1,4 +1,6 @@
 const Router = require('@koa/router');
+const { pick } = require('../lib/fp');
+
 const { User } = require('../models/User');
 
 const router = new Router();
@@ -14,7 +16,7 @@ router.post('/register', async (ctx) => {
     await user.save();
     ctx.body = {
       success: true,
-      save: user,
+      save: pick(user, ['name', 'email']),
     };
   } catch (error) {
     ctx.thorw(500, error);
