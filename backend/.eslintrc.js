@@ -15,5 +15,6 @@ module.exports = {
     'consistent-return': 0,
     'import/no-extraneous-dependencies': ['warn', { packageDir: __dirname }],
     'no-underscore-dangle': 0,
+    'no-console': 0,
   },
 };
