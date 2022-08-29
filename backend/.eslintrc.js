@@ -13,7 +13,7 @@ module.exports = {
   rules: {
     'max-len': ['error', { code: 250 }],
     'consistent-return': 0,
-    'import/no-extraneous-dependencies': ['warn', { packageDir: __dirname }],
+    'import/no-extraneous-dependencies': 0,
     'no-underscore-dangle': 0,
     'no-console': 0,
   },

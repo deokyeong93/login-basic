@@ -20,6 +20,7 @@ mongoose.connect(MONGO_URI)
 App.use(cors())
   .use(bodyParser({}))
   .use(router.routes())
+  .use(router.allowedMethods())
   .listen(PORT, () => {
     console.log(`🚀 ${PORT}에 연결중입니다. 🚀`);
   });
