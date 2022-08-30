@@ -11,7 +11,7 @@ router.get('/', (ctx) => {
 
 router.post('/register', async (ctx) => {
   const user = new User(ctx.request.body);
-
+  // 공부할 부분, save 콜백함수 먹이면 원하는 동작이 잘 안나옴.. 이유는 promise라..
   try {
     await user.save();
     ctx.body = {
