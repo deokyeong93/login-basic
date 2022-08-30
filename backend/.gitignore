@@ -29,3 +29,5 @@ coverage
 
 # ENV
 *.env
+dev.js
+prod.js

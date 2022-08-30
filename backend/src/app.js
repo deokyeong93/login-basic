@@ -11,7 +11,7 @@ const router = require('./routes');
 
 const App = new Koa();
 
-const { PORT, MONGO_URI } = process.env;
+const { PORT, MONGO_URI } = require('../config/index');
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB Connected...'))
