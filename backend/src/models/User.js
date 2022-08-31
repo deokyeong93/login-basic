@@ -1,6 +1,8 @@
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { SECRET_KEY } = require('../../config/index');
 
 const saltRounds = 10;
 
@@ -54,10 +56,16 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.methods.comparePassword = async function (plainPassword) {
-  const user = this;
+  const { password } = this;
 
-  const isMatched = await bcrypt.compare(plainPassword, user.password);
+  const isMatched = await bcrypt.compare(plainPassword, password);
   return isMatched;
+};
+
+userSchema.methods.generateJWT = function () {
+  const { _id } = this;
+
+  return jwt.sign(_id.toHexString(), SECRET_KEY);
 };
 
 const User = mongoose.model('User', userSchema);

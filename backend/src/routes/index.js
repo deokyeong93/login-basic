@@ -36,16 +36,24 @@ router.post('/login', async (ctx) => {
 
     const isMatched = await userInfo.comparePassword(ctx.request.body.password);
     if (!isMatched) {
-      if (!userInfo) {
-        ctx.body = {
-          loginSuccess: false,
-          message: '비밀번호가 일치하지 않습니다.',
-        };
-        return;
-      }
+      ctx.body = {
+        loginSuccess: false,
+        message: '비밀번호가 일치하지 않습니다.',
+      };
+      return;
     }
 
     // JWT 토큰 발급하기
+    const token = userInfo.generateJWT();
+    userInfo.token = token;
+    await userInfo.save();
+
+    ctx.cookies.set('x_auth', token);
+    ctx.status = 200;
+    ctx.body = {
+      loginSuccess: true,
+      userId: userInfo._id,
+    };
   } catch (error) {
     ctx.throw(500, error);
   }
