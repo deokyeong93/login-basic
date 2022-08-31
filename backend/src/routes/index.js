@@ -23,4 +23,32 @@ router.post('/register', async (ctx) => {
   }
 });
 
+router.post('/login', async (ctx) => {
+  try {
+    const userInfo = await User.findOne({ email: ctx.request.body.email });
+    if (!userInfo) {
+      ctx.body = {
+        loginSuccess: false,
+        message: '제공된 이메일에 해당하는 유저가 없습니다.',
+      };
+      return;
+    }
+
+    const isMatched = await userInfo.comparePassword(ctx.request.body.password);
+    if (!isMatched) {
+      if (!userInfo) {
+        ctx.body = {
+          loginSuccess: false,
+          message: '비밀번호가 일치하지 않습니다.',
+        };
+        return;
+      }
+    }
+
+    // JWT 토큰 발급하기
+  } catch (error) {
+    ctx.throw(500, error);
+  }
+});
+
 module.exports = router;
