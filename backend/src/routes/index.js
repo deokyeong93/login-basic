@@ -1,5 +1,6 @@
 const Router = require('@koa/router');
 const { pick } = require('../lib/fp');
+const auth = require('../middleware/auth');
 
 const { User } = require('../models/User');
 
@@ -57,6 +58,18 @@ router.post('/login', async (ctx) => {
   } catch (error) {
     ctx.throw(500, error);
   }
+});
+
+router.get('/auth', auth, (ctx) => {
+  ctx.status = 200;
+  ctx.body = {
+    isAdmin: ctx.req.user.role !== 0,
+    isAuth: true,
+    ...pick(
+      ctx.req.user,
+      ['_id', 'email', 'name', 'lastname', 'role', 'image'],
+    ),
+  };
 });
 
 module.exports = router;

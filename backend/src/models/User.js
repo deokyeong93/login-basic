@@ -68,6 +68,15 @@ userSchema.methods.generateJWT = function () {
   return jwt.sign(_id.toHexString(), SECRET_KEY);
 };
 
+userSchema.statics.findByToken = async function (token) {
+  const user = this;
+
+  const decoded = jwt.verify(token, SECRET_KEY);
+  const result = await user.findOne({ _id: decoded });
+
+  return result;
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = { User };
