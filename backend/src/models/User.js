@@ -48,11 +48,11 @@ userSchema.pre('save', async function (next) {
 
       user.password = hash;
     } catch (error) {
-      return next(error);
+      await next(error);
     }
   }
 
-  next();
+  await next();
 });
 
 userSchema.methods.comparePassword = async function (plainPassword) {
@@ -72,7 +72,7 @@ userSchema.statics.findByToken = async function (token) {
   const user = this;
 
   const decoded = jwt.verify(token, SECRET_KEY);
-  const result = await user.findOne({ _id: decoded });
+  const result = await user.findOne({ _id: decoded, token });
 
   return result;
 };

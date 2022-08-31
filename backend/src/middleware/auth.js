@@ -14,15 +14,10 @@ const auth = async (ctx, next) => {
       return;
     }
 
-    ctx.body = {
-      isAuth: true,
-      error: false,
-    };
-
     ctx.req.token = token;
     ctx.req.user = user;
 
-    next();
+    await next();
   } catch (error) {
     ctx.throw(500);
   }

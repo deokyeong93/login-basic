@@ -72,4 +72,25 @@ router.get('/auth', auth, (ctx) => {
   };
 });
 
+router.get('/logout', auth, async (ctx) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { id: ctx.req.user._id },
+      { token: '' },
+    );
+
+    if (!user) {
+      ctx.body = {
+        success: false,
+      };
+    }
+
+    ctx.body = {
+      success: true,
+    };
+  } catch (error) {
+    ctx.throw(500);
+  }
+});
+
 module.exports = router;
